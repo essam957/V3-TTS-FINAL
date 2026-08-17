@@ -1,0 +1,263 @@
+<!doctype html><html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#1565c0"><title>محفظ كلمات الإنجليزي - أولى إعدادي</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f4f7fb;color:#172033}
+header{background:#1565c0;color:#fff;padding:18px;text-align:center}main{max-width:760px;margin:auto;padding:14px}
+.card{background:#fff;border-radius:18px;padding:18px;margin:12px 0;box-shadow:0 3px 14px #0001}
+select,button,input{font-size:16px;border-radius:11px;padding:11px;margin:5px}
+select,input{border:1px solid #ccd5e2;background:#fff}button{border:0;background:#1565c0;color:#fff;cursor:pointer}
+.secondary{background:#e8eef8;color:#17355f}.syllables{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;direction:ltr;margin:12px 0}.syllable{background:#e8f0ff;border:2px solid #c8d8f5;color:#17355f;border-radius:12px;padding:8px 12px;font-size:22px;font-weight:700}.syllable.active{background:#1565c0;color:#fff;border-color:#1565c0;transform:scale(1.04)}.coach{background:#fff8e1;border:1px solid #ffe082;border-radius:14px;padding:12px;text-align:center;margin-top:10px}.listen{background:#7b1fa2}.listen.listening{background:#c62828;animation:pulse 1s infinite}.feedback{font-size:19px;font-weight:700;text-align:center;min-height:30px}.hint{font-size:14px;color:#667085;text-align:center}@keyframes pulse{50%{opacity:.55}}.word{font-size:36px;font-weight:700;direction:ltr;text-align:center;margin:18px}
+.meaning{font-size:23px;text-align:center;color:#1565c0;min-height:32px}
+.progress{height:10px;background:#e5eaf2;border-radius:9px;overflow:hidden}.bar{height:100%;background:#1565c0;width:0}
+.options button{display:block;width:100%;background:#eef3fa;color:#172033;text-align:right}
+.good{color:#18864b;font-weight:700}.bad{color:#c62828;font-weight:700}
+.small{color:#667085;font-size:14px}.stats{display:flex;gap:8px;flex-wrap:wrap}.stat{flex:1;min-width:130px;background:#eef3fa;border-radius:12px;padding:12px;text-align:center}
+
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.logo{width:44px;height:44px;border-radius:14px;background:#fff;color:#1565c0;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold}
+.hero{background:linear-gradient(135deg,#1565c0,#0d47a1);color:#fff;border-radius:22px;padding:20px;margin:14px 0;box-shadow:0 8px 22px #1565c044}
+.hero .word{color:#fff;margin:14px 0 8px}
+.hero .meaning{color:#dce9ff}
+.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.actions button{width:100%;font-weight:bold}
+.chips{display:flex;gap:8px;overflow:auto;padding-bottom:4px}
+.chip{white-space:nowrap;background:#eef3fa;color:#17355f;border-radius:999px;padding:8px 12px}
+.navtabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.navtabs button{background:#eef3fa;color:#17355f}
+.section-title{display:flex;justify-content:space-between;align-items:center}
+@media(max-width:420px){.word{font-size:31px}.actions{grid-template-columns:1fr 1fr}}
+<style>
+.syllables{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;direction:ltr;margin:14px 0}
+.syll{background:#eef3fa;color:#17355f;padding:10px 14px;border-radius:12px;font-weight:bold;font-size:22px}
+.syll.active{background:#1565c0;color:#fff}
+.coach{text-align:center;background:#f5f7fb;border-radius:12px;padding:12px;margin:10px 0}
+.trainBtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}.trainBtns button{width:100%}
+
+.letterView,.soundView{direction:ltr;text-align:center;min-height:24px;margin:8px 0;font-weight:bold}
+.letterView{font-size:16px;color:#455a64}.soundView{font-size:20px;color:#1565c0}
+#stageTitle{text-align:center;margin:8px 0;color:#17355f}
+</style></style></head><body>
+<header><h1>📚 محفظ كلمات الإنجليزي</h1><div>أولى إعدادي • الترم الأول 2026/2027</div></header><main>
+<div class="hero">
+  <div class="topbar"><div><div style="font-size:14px;opacity:.85">English Vocab</div><h2 style="margin:4px 0">أولى إعدادي 2026/2027</h2></div><div class="logo">E</div></div>
+  <div class="word" id="word"></div>
+  <div class="meaning" id="meaning">اضغط «إظهار المعنى»</div>
+  <div class="actions">
+    <button onclick="speak()">🔊 اسمع</button>
+    <button onclick="repeatSpeak()">🔁 كرر</button>
+    <button onclick="showMeaning()">📖 المعنى</button>
+    <button onclick="markLearned()">⭐ حفظ</button>
+  </div>
+  <div class="coach">
+    <div><b>🧩 احفظها مقطعًا مقطعًا</b></div>
+    <div id="syllables" class="syllables"></div>
+    <div class="actions">
+      <button onclick="playSyllables()">🔊 اسمع المقاطع</button>
+      <button class="listen" id="listenBtn" onclick="startPronunciationTest()">🎤 انطق واختبر حفظك</button>
+    </div>
+    <div id="feedback" class="feedback"></div>
+    <div id="heard" class="hint"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="section-title"><h3>📚 الوحدات</h3><span id="count" class="small"></span></div>
+  <select id="unit" style="width:100%"></select>
+  <div class="progress" style="margin-top:12px"><div id="bar" class="bar"></div></div>
+</div>
+
+<div class="card">
+  <div class="section-title"><h3>🧭 التنقل</h3><span class="small">كلمة بكلمة</span></div>
+  <div class="navtabs">
+    <button onclick="prev()">⬅ السابق</button>
+    <button onclick="showMeaning()">👁️ إظهار</button>
+    <button onclick="next()">التالي ➡</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="section-title"><h3>🎯 الاختبار</h3><span class="small">اختر الإجابة</span></div>
+  <p id="q"></p><div id="options" class="options"></div><div id="result"></div>
+  <button class="secondary" onclick="newQuestion()" style="width:100%">🎯 سؤال جديد</button>
+</div>
+
+<div class="card">
+  <div class="section-title"><h3>✍️ اختبار الكتابة</h3><span class="small">تثبيت الحفظ</span></div>
+  <p>اكتب الكلمة الإنجليزية التي تعني: <b id="writeMeaning"></b></p>
+  <input id="answer" autocomplete="off" style="width:100%;direction:ltr">
+  <button onclick="checkWrite()" style="width:100%">تحقق من الإجابة</button>
+  <div id="writeResult"></div>
+</div>
+
+<div class="card">
+  <div class="section-title"><h3>⭐ الكلمات المحفوظة</h3></div>
+  <div class="stats">
+    <div class="stat">إجمالي الوحدة<br><b id="total">0</b></div>
+    <div class="stat">المحفوظة<br><b id="learned">0</b></div>
+    <div class="stat">التقدم<br><b id="percent">0%</b></div>
+  </div>
+  <p class="small">اضغط ⭐ حفظ بعد إتقان الكلمة. سيتم الاحتفاظ بالتقدم على الهاتف.</p>
+  <button class="secondary" onclick="resetProgress()">مسح التقدم</button>
+</div>
+</main>
+<script>
+const units=[{"unit": "Unit 1 – Life in a Digital World", "words": [{"en": "digital", "ar": "رقمي"}, {"en": "screen time", "ar": "وقت الشاشة"}, {"en": "app", "ar": "تطبيق"}, {"en": "website", "ar": "موقع إلكتروني"}, {"en": "screen", "ar": "شاشة"}, {"en": "ebook", "ar": "كتاب إلكتروني"}, {"en": "laptop", "ar": "حاسوب محمول"}, {"en": "night mode", "ar": "الوضع الليلي"}, {"en": "smartboard", "ar": "لوحة ذكية"}, {"en": "tablet", "ar": "جهاز لوحي"}, {"en": "device", "ar": "جهاز"}, {"en": "social media", "ar": "وسائل التواصل الاجتماعي"}, {"en": "technology", "ar": "تكنولوجيا"}, {"en": "keyboard", "ar": "لوحة مفاتيح"}, {"en": "printer", "ar": "طابعة"}, {"en": "speaker", "ar": "مكبر صوت"}, {"en": "microphone", "ar": "ميكروفون"}, {"en": "webcam", "ar": "كاميرا ويب"}, {"en": "mouse", "ar": "فأرة الكمبيوتر"}, {"en": "headphones", "ar": "سماعات الرأس"}, {"en": "search", "ar": "يبحث"}, {"en": "useful", "ar": "مفيد"}, {"en": "curious", "ar": "فضولي"}, {"en": "challenge", "ar": "تحدٍّ"}, {"en": "online", "ar": "متصل بالإنترنت"}, {"en": "offline", "ar": "غير متصل"}, {"en": "safe", "ar": "آمن"}, {"en": "respectful", "ar": "محترم"}, {"en": "eye-catching", "ar": "لافت للنظر"}]}, {"unit": "Unit 2 – Learning to Learn", "words": [{"en": "learn", "ar": "يتعلم"}, {"en": "learner", "ar": "متعلم"}, {"en": "learning", "ar": "تعلم"}, {"en": "skill", "ar": "مهارة"}, {"en": "goal", "ar": "هدف"}, {"en": "plan", "ar": "خطة"}, {"en": "practice", "ar": "يتدرب"}, {"en": "remember", "ar": "يتذكر"}, {"en": "review", "ar": "يراجع"}, {"en": "improve", "ar": "يحسن"}, {"en": "mistake", "ar": "خطأ"}, {"en": "challenge", "ar": "تحدٍّ"}, {"en": "curious", "ar": "فضولي"}, {"en": "visual", "ar": "بصري"}, {"en": "creative", "ar": "مبدع"}, {"en": "teamwork", "ar": "عمل جماعي"}, {"en": "note", "ar": "ملاحظة"}, {"en": "mind map", "ar": "خريطة ذهنية"}, {"en": "organize", "ar": "ينظم"}, {"en": "focus", "ar": "يركز"}, {"en": "strategy", "ar": "استراتيجية"}, {"en": "success", "ar": "نجاح"}, {"en": "failure", "ar": "فشل"}, {"en": "talent", "ar": "موهبة"}]}, {"unit": "Unit 3 – Role Models", "words": [{"en": "role model", "ar": "قدوة"}, {"en": "inspiring", "ar": "مُلهم"}, {"en": "inspiration", "ar": "إلهام"}, {"en": "scientist", "ar": "عالم"}, {"en": "geographer", "ar": "جغرافي"}, {"en": "writer", "ar": "كاتب"}, {"en": "thinker", "ar": "مفكر"}, {"en": "biography", "ar": "سيرة ذاتية"}, {"en": "achievement", "ar": "إنجاز"}, {"en": "success", "ar": "نجاح"}, {"en": "discover", "ar": "يكتشف"}, {"en": "study", "ar": "يدرس"}, {"en": "education", "ar": "تعليم"}, {"en": "influence", "ar": "تأثير"}, {"en": "positive", "ar": "إيجابي"}, {"en": "brave", "ar": "شجاع"}, {"en": "kind", "ar": "طيب"}, {"en": "hard-working", "ar": "مجتهد"}, {"en": "respect", "ar": "يحترم"}, {"en": "contribution", "ar": "مساهمة"}, {"en": "history", "ar": "تاريخ"}, {"en": "politics", "ar": "سياسة"}, {"en": "geography", "ar": "جغرافيا"}]}, {"unit": "Unit 4 – Smart Choices", "words": [{"en": "choice", "ar": "اختيار"}, {"en": "decision", "ar": "قرار"}, {"en": "smart", "ar": "ذكي"}, {"en": "responsible", "ar": "مسؤول"}, {"en": "consequence", "ar": "نتيجة"}, {"en": "evaluate", "ar": "يقيّم"}, {"en": "situation", "ar": "موقف"}, {"en": "healthy", "ar": "صحي"}, {"en": "unhealthy", "ar": "غير صحي"}, {"en": "stress", "ar": "توتر"}, {"en": "stressed", "ar": "متوتر"}, {"en": "advice", "ar": "نصيحة"}, {"en": "should", "ar": "ينبغي"}, {"en": "shouldn't", "ar": "لا ينبغي"}, {"en": "problem", "ar": "مشكلة"}, {"en": "solution", "ar": "حل"}, {"en": "action", "ar": "إجراء"}, {"en": "impact", "ar": "تأثير"}, {"en": "consider", "ar": "يضع في الاعتبار"}, {"en": "avoid", "ar": "يتجنب"}, {"en": "habit", "ar": "عادة"}, {"en": "call to action", "ar": "دعوة إلى اتخاذ إجراء"}, {"en": "decision-making", "ar": "اتخاذ القرار"}]}, {"unit": "Unit 5 – Future Dreams", "words": [{"en": "future", "ar": "المستقبل"}, {"en": "dream", "ar": "حلم"}, {"en": "dream job", "ar": "وظيفة الأحلام"}, {"en": "career", "ar": "مهنة"}, {"en": "plan", "ar": "خطة"}, {"en": "goal", "ar": "هدف"}, {"en": "talent", "ar": "موهبة"}, {"en": "interest", "ar": "اهتمام"}, {"en": "intention", "ar": "نية"}, {"en": "be going to", "ar": "سوف / يعتزم"}, {"en": "engineer", "ar": "مهندس"}, {"en": "doctor", "ar": "طبيب"}, {"en": "dentist", "ar": "طبيب أسنان"}, {"en": "vet", "ar": "طبيب بيطري"}, {"en": "surgeon", "ar": "جرّاح"}, {"en": "scientist", "ar": "عالم"}, {"en": "training", "ar": "تدريب"}, {"en": "skill", "ar": "مهارة"}, {"en": "future city", "ar": "مدينة المستقبل"}, {"en": "countryside", "ar": "الريف"}, {"en": "environment", "ar": "البيئة"}, {"en": "career path", "ar": "مسار مهني"}]}, {"unit": "Unit 6 – Global Citizens", "words": [{"en": "global citizen", "ar": "مواطن عالمي"}, {"en": "citizenship", "ar": "مواطنة"}, {"en": "community", "ar": "مجتمع"}, {"en": "environment", "ar": "بيئة"}, {"en": "protect", "ar": "يحمي"}, {"en": "save", "ar": "يوفّر/ينقذ"}, {"en": "waste", "ar": "يهدر"}, {"en": "peace", "ar": "سلام"}, {"en": "fair", "ar": "عادل"}, {"en": "respect", "ar": "يحترم"}, {"en": "responsibility", "ar": "مسؤولية"}, {"en": "contribute", "ar": "يساهم"}, {"en": "pollute", "ar": "يلوّث"}, {"en": "voluntary work", "ar": "عمل تطوعي"}, {"en": "encourage", "ar": "يشجع"}, {"en": "support", "ar": "يدعم"}, {"en": "solve", "ar": "يحل"}, {"en": "improve", "ar": "يحسّن"}, {"en": "actions", "ar": "أفعال/إجراءات"}, {"en": "clean", "ar": "نظيف"}, {"en": "keep", "ar": "يحافظ على"}, {"en": "make a difference", "ar": "يُحدث فرقًا"}, {"en": "collect", "ar": "يجمع"}, {"en": "plant trees", "ar": "يزرع الأشجار"}, {"en": "pick up", "ar": "يلتقط/يجمع"}]}]; let unitIndex=0, i=0;
+let learned=JSON.parse(localStorage.getItem('prep1_learned')||'{}');
+const unitSel=document.getElementById('unit');
+units.forEach((u,n)=>{let o=document.createElement('option');o.value=n;o.textContent=u.unit;unitSel.appendChild(o)});
+unitSel.onchange=()=>{unitIndex=+unitSel.value;i=0;render();newQuestion()};
+function words(){return units[unitIndex].words}
+function key(){return unitIndex+'_'+i}
+function render(){
+ const w=words(); let x=w[i];
+ document.getElementById('word').textContent=x.en;document.getElementById('meaning').textContent='اضغط «إظهار المعنى»';
+ document.getElementById('count').textContent=`${units[unitIndex].unit} — كلمة ${i+1} من ${w.length}`;
+ document.getElementById('bar').style.width=((i+1)/w.length*100)+'%';
+ document.getElementById('writeMeaning').textContent=x.ar;document.getElementById('answer').value='';
+ document.getElementById('writeResult').textContent='';
+ document.getElementById('feedback').textContent='';
+ document.getElementById('heard').textContent='';
+ renderSyllables();
+ updateStats();
+}
+function normalizeText(t){return (t||'').toLowerCase().replace(/[’']/g,'').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim()}
+function syllableParts(word){
+  const phrase=word.trim().split(/\s+/);
+  return phrase.flatMap(part=>{
+    if(part.length<=3) return [part];
+    const known={important:['im','por','tant'],digital:['dig','i','tal'],technology:['tech','nol','ogy'],remember:['re','mem','ber'],practice:['prac','tice'],review:['re','view'],improve:['im','prove'],challenge:['chal','lenge'],creative:['cre','a','tive'],strategy:['stra','te','gy'],success:['suc','cess'],failure:['fail','ure'],talent:['tal','ent'],role:['role'],model:['mod','el'],inspiring:['in','spir','ing'],inspiration:['in','spi','ra','tion'],scientist:['sci','en','tist'],geographer:['ge','og','ra','pher'],biography:['bi','og','ra','phy'],achievement:['a','chieve','ment'],discover:['dis','cov','er'],education:['ed','u','ca','tion'],influence:['in','flu','ence'],positive:['pos','i','tive'],responsible:['re','spon','si','ble'],consequence:['con','se','quence'],evaluate:['e','val','u','ate'],situation:['sit','u','a','tion'],healthy:['health','y'],unhealthy:['un','health','y'],advice:['ad','vice'],solution:['so','lu','tion'],consider:['con','sid','er'],avoid:['a','void'],environment:['en','vi','ron','ment'],responsibility:['re','spon','si','bil','i','ty'],contribute:['con','trib','ute'],pollute:['pol','lute'],voluntary:['vol','un','tar','y'],encourage:['en','cour','age'],support:['sup','port'],collect:['col','lect'],difference:['dif','fer','ence']};
+    if(known[part]) return known[part];
+    let m=part.match(/[^aeiouy]*[aeiouy]+(?:[^aeiouy]+(?=[^aeiouy]|$))?/gi)||[part];
+    m=m.filter(Boolean);
+    if(m.length>3){let cut=Math.ceil(m.length/3);let out=[];for(let j=0;j<m.length;j+=cut)out.push(m.slice(j,j+cut).join(''));return out.slice(0,3)}
+    return m.length>=2?m:[part];
+  });
+}
+function renderSyllables(){
+ const box=document.getElementById('syllables'); box.innerHTML='';
+ syllableParts(words()[i].en).forEach((part,n)=>{let b=document.createElement('button');b.className='syllable';b.textContent=part;b.onclick=()=>speakSyllable(part,b);box.appendChild(b)});
+}
+function speakSyllable(part,el){document.querySelectorAll('.syllable').forEach(x=>x.classList.remove('active'));if(el)el.classList.add('active');speakText(part);setTimeout(()=>el&&el.classList.remove('active'),900)}
+function speakText(text){if(window.AndroidTTS){AndroidTTS.speak(text,'en');return;}let u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.68;speechSynthesis.cancel();speechSynthesis.speak(u)}
+function speakArabic(text){if(window.AndroidTTS){AndroidTTS.speak(text,'ar');return;}let u=new SpeechSynthesisUtterance(text);u.lang='ar-SA';u.rate=.9;speechSynthesis.speak(u)}
+function playSyllables(){
+ const parts=syllableParts(words()[i].en); let n=0;
+ function run(){if(n>=parts.length){setTimeout(()=>speakText(words()[i].en),500);return} let els=document.querySelectorAll('.syllable');els.forEach(x=>x.classList.remove('active'));if(els[n])els[n].classList.add('active');speakText(parts[n]);n++;setTimeout(run,900)}
+ run();
+}
+function speak(){speakText(words()[i].en)}
+function repeatSpeak(){ let n=3, run=()=>{ if(n<=0)return; speak(); n--; setTimeout(run,1400); }; run(); }
+function showMeaning(){document.getElementById('meaning').textContent=words()[i].ar}
+function next(){i=(i+1)%words().length;render()} function prev(){i=(i-1+words().length)%words().length;render()}
+function markLearned(){learned[key()]=1;localStorage.setItem('prep1_learned',JSON.stringify(learned));updateStats();document.getElementById('feedback').innerHTML='🌟 أحسنت! تم حفظ الكلمة.';speakArabic('أحسنت! ممتاز! تم حفظ الكلمة.')}
+function updateStats(){let all=units.reduce((s,u,n)=>s+u.words.length,0), done=Object.keys(learned).length;document.getElementById('total').textContent=words().length;document.getElementById('learned').textContent=done;document.getElementById('percent').textContent=Math.round(done/all*100)+'%'}
+function newQuestion(){
+ let w=words(), c=Math.floor(Math.random()*w.length), opts=[c];while(opts.length<4){let x=Math.floor(Math.random()*w.length);if(!opts.includes(x))opts.push(x)}opts.sort(()=>Math.random()-.5);
+ document.getElementById('q').textContent='ما معنى: '+w[c].en+' ؟';document.getElementById('result').textContent='';let box=document.getElementById('options');box.innerHTML='';
+ opts.forEach(x=>{let b=document.createElement('button');b.textContent=w[x].ar;b.onclick=()=>{if(x===c){document.getElementById('result').innerHTML='<p class="good">🌟 أحسنت! إجابة صحيحة!</p>';speakArabic('أحسنت! ممتاز! إجابة صحيحة.');}else{document.getElementById('result').innerHTML='<p class="bad">❌ حاول مرة أخرى</p>';speakArabic('حاول مرة أخرى.')}};box.appendChild(b)})
+}
+function checkWrite(){let a=document.getElementById('answer').value.trim().toLowerCase(),c=words()[i].en.toLowerCase();if(a===c){document.getElementById('writeResult').innerHTML='<p class="good">✅ أحسنت! الكلمة صحيحة وتم حفظها.</p>';learned[key()]=1;localStorage.setItem('prep1_learned',JSON.stringify(learned));updateStats();speakArabic('أحسنت! ممتاز! الكلمة صحيحة وتم حفظها.')}else{document.getElementById('writeResult').innerHTML='<p class="bad">❌ الصحيح: '+words()[i].en+'</p>';speakArabic('حاول مرة أخرى.')}}
+function startPronunciationTest(){
+ if(!window.AndroidTTS){document.getElementById('feedback').textContent='🎤 الاختبار الصوتي يحتاج نسخة التطبيق.';return}
+ document.getElementById('feedback').textContent='🎤 استمع للكلمة ثم انطقها الآن...';document.getElementById('heard').textContent='';
+ AndroidTTS.listen();
+}
+function onListeningState(active){let b=document.getElementById('listenBtn');b.classList.toggle('listening',active);b.textContent=active?'🔴 استمع...':'🎤 انطق واختبر حفظك'}
+function onSpeechPermissionNeeded(){document.getElementById('feedback').textContent='🎤 اسمح للتطبيق باستخدام الميكروفون ثم اضغط الزر مرة أخرى.';speakArabic('اسمح للتطبيق باستخدام الميكروفون لاختبار الحفظ.')}
+function onSpeechPermissionDenied(){document.getElementById('feedback').textContent='❌ لم يتم السماح بالميكروفون.';speakArabic('لم يتم السماح بالميكروفون.')}
+function onSpeechError(code){document.getElementById('feedback').textContent='🔁 لم أسمع الكلمة بوضوح. حاول مرة أخرى.';speakArabic('حاول مرة أخرى.')}
+function levenshtein(a,b){let m=a.length,n=b.length,dp=Array.from({length:m+1},()=>Array(n+1).fill(0));for(let x=0;x<=m;x++)dp[x][0]=x;for(let y=0;y<=n;y++)dp[0][y]=y;for(let x=1;x<=m;x++)for(let y=1;y<=n;y++)dp[x][y]=Math.min(dp[x-1][y]+1,dp[x][y-1]+1,dp[x-1][y-1]+(a[x-1]===b[y-1]?0:1));return dp[m][n]}
+function speechMatches(target,heard){let a=normalizeText(target),b=normalizeText(heard);if(a===b)return true;if(!a||!b)return false;let d=levenshtein(a,b),score=1-d/Math.max(a.length,b.length);return score>=0.82}
+function onSpeechResult(heard){
+ const target=words()[i].en;document.getElementById('heard').textContent='سمعت: '+heard;
+ if(speechMatches(target,heard)){learned[key()]=1;localStorage.setItem('prep1_learned',JSON.stringify(learned));updateStats();document.getElementById('feedback').innerHTML='🌟 أحسنت! نطقك صحيح وتم حفظ الكلمة.';speakArabic('أحسنت! ممتاز! نطقك صحيح وتم حفظ الكلمة.')}
+ else{document.getElementById('feedback').innerHTML='❌ لم تطابق الكلمة. لنقسمها معًا.';speakArabic('حاول مرة أخرى. استمع للمقاطع.');setTimeout(playSyllables,700)}
+}
+function resetProgress(){if(confirm('هل تريد مسح التقدم؟')){learned={};localStorage.removeItem('prep1_learned');updateStats()}}
+render();newQuestion();
+</script>
+<script>
+(function(){
+const SYLLABLES={"digital": ["dig", "i", "tal"], "screen time": ["screen", "time"], "website": ["web", "site"], "ebook": ["e", "book"], "laptop": ["lap", "top"], "night mode": ["night", "mode"], "smartboard": ["smart", "board"], "tablet": ["tab", "let"], "device": ["de", "vice"], "social media": ["so", "cial", "me", "dia"], "technology": ["tech", "nol", "o", "gy"], "keyboard": ["key", "board"], "printer": ["print", "er"], "speaker": ["speak", "er"], "microphone": ["mi", "cro", "phone"], "webcam": ["web", "cam"], "headphones": ["head", "phones"], "useful": ["use", "ful"], "curious": ["cu", "ri", "ous"], "challenge": ["chal", "lenge"], "online": ["on", "line"], "offline": ["off", "line"], "respectful": ["re", "spect", "ful"], "learner": ["learn", "er"], "learning": ["learn", "ing"], "practice": ["prac", "tice"], "remember": ["re", "mem", "ber"], "review": ["re", "view"], "improve": ["im", "prove"], "mistake": ["mis", "take"], "visual": ["vis", "u", "al"], "creative": ["cre", "a", "tive"], "teamwork": ["team", "work"], "organize": ["or", "gan", "ize"], "focus": ["fo", "cus"], "strategy": ["strat", "e", "gy"], "success": ["suc", "cess"], "failure": ["fail", "ure"], "talent": ["tal", "ent"], "role model": ["role", "mod", "el"], "inspiring": ["in", "spir", "ing"], "scientist": ["sci", "en", "tist"], "writer": ["writ", "er"], "thinker": ["think", "er"], "biography": ["bi", "og", "ra", "phy"], "achievement": ["a", "chieve", "ment"], "discover": ["dis", "cov", "er"], "education": ["ed", "u", "ca", "tion"], "influence": ["in", "flu", "ence"], "positive": ["pos", "i", "tive"], "hard-working": ["hard", "work", "ing"], "respect": ["re", "spect"], "contribution": ["con", "tri", "bu", "tion"], "history": ["his", "to", "ry"], "politics": ["pol", "i", "tics"], "geography": ["ge", "og", "ra", "phy"], "choice": ["choice"], "decision": ["de", "ci", "sion"], "responsible": ["re", "spon", "si", "ble"], "consequence": ["con", "se", "quence"], "evaluate": ["e", "val", "u", "ate"], "situation": ["sit", "u", "a", "tion"], "healthy": ["health", "y"], "unhealthy": ["un", "health", "y"], "advice": ["ad", "vice"], "problem": ["prob", "lem"], "solution": ["so", "lu", "tion"], "action": ["ac", "tion"], "impact": ["im", "pact"], "consider": ["con", "sid", "er"], "avoid": ["a", "void"], "habit": ["hab", "it"], "future": ["fu", "ture"], "career": ["ca", "reer"], "interest": ["in", "ter", "est"], "intention": ["in", "ten", "tion"], "engineer": ["en", "gi", "neer"], "doctor": ["doc", "tor"], "dentist": ["den", "tist"], "surgeon": ["sur", "geon"], "training": ["train", "ing"], "countryside": ["coun", "try", "side"], "environment": ["en", "vi", "ron", "ment"], "global citizen": ["glo", "bal", "cit", "i", "zen"], "citizenship": ["cit", "i", "zen", "ship"], "community": ["com", "mu", "ni", "ty"], "protect": ["pro", "tect"], "responsibility": ["re", "spon", "si", "bil", "i", "ty"], "contribute": ["con", "trib", "ute"], "pollute": ["pol", "lute"], "voluntary work": ["vol", "un", "tar", "y", "work"], "encourage": ["en", "cour", "age"], "support": ["sup", "port"], "actions": ["ac", "tions"], "make a difference": ["make", "a", "dif", "fer", "ence"], "collect": ["col", "lect"], "plant trees": ["plant", "trees"], "pick up": ["pick", "up"]};
+let stage=0, idx=0;
+function cw(){return words()[i]}
+function ss(){return SYLLABLES[cw().en.toLowerCase()]||cw().en.split(/[\s-]+/)}
+function speak(t){if(window.AndroidTTS){AndroidTTS.speak(t);return}if(window.speechSynthesis){let u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.72;speechSynthesis.cancel();speechSynthesis.speak(u)}}
+function lettersFor(part){
+  return part.split('').map(c=>{
+    const names={a:'ay',b:'bee',c:'see',d:'dee',e:'ee',f:'ef',g:'gee',h:'aitch',i:'eye',j:'jay',k:'kay',l:'el',m:'em',n:'en',o:'oh',p:'pee',q:'cue',r:'ar',s:'ess',t:'tee',u:'you',v:'vee',w:'double-you',x:'ex',y:'why',z:'zee'};
+    return c===' ' ? '' : c.toUpperCase()+' – '+(names[c.toLowerCase()]||c);
+  }).filter(Boolean).join('  •  ');
+}
+function soundHint(part){
+  // Friendly approximation shown as a teaching cue; the actual audio remains the authoritative pronunciation.
+  const hints={
+    di:'dih',gi:'juh',tal:'tuhl',dig:'dig',i:'eye',tech:'tek',nol:'nuhl',o:'oh',gy:'jee',
+    de:'duh',vice:'vice',so:'soh',cial:'shul',me:'mee',dia:'dee-uh',web:'web',site:'site',
+    lap:'lap',top:'top',night:'night',mode:'mode',smart:'smart',board:'board',tab:'tab',let:'let',
+    key:'key',speak:'speek',er:'er',print:'print',mi:'my',cro:'kroh',phone:'fohn',cam:'kam',
+    head:'hed',phones:'fohnz',use:'yooz',ful:'ful',cu:'kyoo',ri:'ree',ous:'us',chal:'chal',lenge:'lenj',
+    on:'on',line:'line',off:'off',safe:'safe',re:'rih',spect:'spekt',eye:'eye',catch:'kach',ing:'ing'
+  };
+  return hints[part.toLowerCase()]||part;
+}
+function ensure(){
+ if(document.getElementById('trainingPanel'))return;
+ let d=document.createElement('div');d.id='trainingPanel';d.className='card';
+ d.innerHTML='<h3>🧩 تعلم الكلمة خطوة بخطوة</h3>'+
+ '<div id="stageTitle"></div><div id="syllableView" class="syllables"></div>'+
+ '<div id="letterView" class="letterView"></div><div id="soundView" class="soundView"></div>'+
+ '<div id="coach" class="coach"></div><div class="trainBtns">'+
+ '<button onclick="nextTeaching()">▶️ التالي</button><button onclick="repeatTeaching()">🔁 كرر</button>'+
+ '<button onclick="listenStudent()">🎤 انطق الكلمة</button><button onclick="masterWord()">⭐ أتقنتها</button></div>'+
+ '<div id="speechResult"></div>';
+ document.querySelector('main').insertBefore(d,document.querySelector('main').children[1]);
+}
+function renderTeach(){
+ ensure(); const a=ss(); const part=a[idx]||a[0];
+ document.getElementById('syllableView').innerHTML=a.map((x,n)=>'<span class="syll '+(n===idx?'active':'')+'">'+x+'</span>').join('<span>•</span>');
+ const titles=['1️⃣ تقسيم الكلمة','2️⃣ أسماء الحروف','3️⃣ دمج صوت المقطع','4️⃣ الكلمة كاملة'];
+ document.getElementById('stageTitle').innerHTML='<b>'+titles[stage]+'</b>';
+ document.getElementById('letterView').textContent=stage===1?lettersFor(part):'';
+ document.getElementById('soundView').textContent=stage===2?('🔊 '+part+' → '+soundHint(part)):'';
+ document.getElementById('coach').textContent=
+ stage===0?'استمع إلى المقطع ثم انتقل للمقطع التالي.':
+ stage===1?'تعلم أسماء الحروف بالإنجليزية.':
+ stage===2?'ادمج الأصوات معًا، ثم انطق المقطع بسلاسة.':
+ 'استمع إلى الكلمة كاملة، ثم انطقها في الميكروفون.';
+}
+window.nextTeaching=function(){
+ const a=ss();
+ if(stage<2){stage++;renderTeach(); if(stage===1)speak(a[idx]); if(stage===2)speak(a[idx]); return;}
+ if(stage===2){ if(idx<a.length-1){idx++;stage=0;renderTeach();speak(a[idx]);} else {stage=3;renderTeach();speak(cw().en);} return;}
+ if(stage===3)listenStudent();
+}
+window.repeatTeaching=function(){
+ const a=ss(),p=a[idx];
+ if(stage===0||stage===1||stage===2)speak(p);else speak(cw().en);
+}
+window.startTraining=function(){stage=0;idx=0;renderTeach();speak(ss()[0])}
+window.masterWord=function(){
+ learned[key()]=1;localStorage.setItem('prep1_learned',JSON.stringify(learned));updateStats();
+ document.getElementById('speechResult').innerHTML='<p class="good">✅ أحسنت! ممتاز! تم حفظ الكلمة.</p>';
+ speak('Excellent! Well done! You have learned the word.');
+}
+window.listenStudent=function(){
+ if(window.AndroidSpeech){AndroidSpeech.start();document.getElementById('speechResult').innerHTML='<p>🎤 Now, say the word.</p>';return}
+ document.getElementById('speechResult').innerHTML='<p>🎤 ميزة الميكروفون تحتاج دعم Android.</p>';
+}
+window.androidSpeechResult=function(t){
+ const target=cw().en.toLowerCase().replace(/[^a-z ]/g,'').trim();
+ const x=(t||'').toLowerCase().replace(/[^a-z ]/g,'').trim();
+ if(x===target||x.includes(target)){
+   document.getElementById('speechResult').innerHTML='<p class="good">✅ أحسنت! ممتاز! نطقك صحيح.</p>';masterWord();
+ }else{
+   document.getElementById('speechResult').innerHTML='<p class="bad">❌ حاول مرة أخرى. استمع ثم كرر.</p>';
+   speak('Try again. Listen and repeat.');
+ }
+}
+const oldRender=render;render=function(){oldRender();stage=0;idx=0;renderTeach()};ensure();renderTeach();
+})();
+</script>
+</body></html>
